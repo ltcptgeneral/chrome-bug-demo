@@ -1,0 +1,66 @@
+window.addEventListener("DOMContentLoaded", init);
+
+async function init () {
+	document.querySelector("#randomize").addEventListener("click", randomize);
+	randomize();
+}
+
+class CustomElement extends HTMLElement {
+	shadowRoot = null;
+
+	constructor () {
+		super();
+		const internals = this.attachInternals();
+		this.shadowRoot = internals.shadowRoot;
+	}
+
+	get id () {
+		return this.dataset.id;
+	}
+
+	set id (id) {
+		this.dataset.id = id;
+	}
+
+	get number () {
+		return this.dataset.number;
+	}
+
+	set number (number) {
+		this.dataset.number = number;
+	}
+
+	update () {
+		this.shadowRoot.querySelector("#id").innerText = this.id;
+		this.shadowRoot.querySelector("#number").innerText = this.number;
+	}
+}
+
+customElements.define("custom-element", CustomElement);
+
+function randomize () {
+	document.querySelectorAll("custom-element").forEach((e) => {
+		e.number = Math.random();
+		e.id = window.crypto.randomUUID();
+	})
+	const container = document.querySelector("#container");
+	let elements = container.children;
+	elements = [].slice.call(elements);
+
+	const sortCriteria = (a, b) => {
+		const aScore = a.number;
+		const bScore = b.number;
+		if (aScore === bScore) {
+			return a.vmid > b.vmid ? 1 : -1;
+		}
+		else {
+			return aScore - bScore;
+		}
+	};
+
+	elements.sort(sortCriteria);
+	for (let i = 0; i < elements.length; i++) {
+		container.appendChild(elements[i]);
+		elements[i].update();
+	}
+}
