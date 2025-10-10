@@ -15,3 +15,8 @@ The "fix" is to statically include the relevant styles directly in the custom el
 ## Why is this a bug?
 
 It's possible that this is not a bug, and that this is working as intended. However, firefox does not have this issue at all. Loading either `bugged.html` or `correct.html` have exactly the same, non-flickering outcome.
+
+# Technical Info
+
+Chrome Version: Version 141.0.7390.76 (Official Build) (64-bit)
+- Although I suspect this has probably been around for a while
