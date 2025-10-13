@@ -2,7 +2,6 @@ window.addEventListener("DOMContentLoaded", init);
 
 async function init () {
 	document.querySelector("#randomize").addEventListener("click", randomize);
-	const container = document.querySelector("#container");
 	document.querySelectorAll("custom-element").forEach((e) => {
 		e.number = Math.random();
 		e.id = window.crypto.randomUUID();
