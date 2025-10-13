@@ -2,7 +2,12 @@ window.addEventListener("DOMContentLoaded", init);
 
 async function init () {
 	document.querySelector("#randomize").addEventListener("click", randomize);
-	randomize();
+	const container = document.querySelector("#container");
+	document.querySelectorAll("custom-element").forEach((e) => {
+		e.number = Math.random();
+		e.id = window.crypto.randomUUID();
+		e.update();
+	})
 }
 
 class CustomElement extends HTMLElement {
@@ -39,28 +44,8 @@ class CustomElement extends HTMLElement {
 customElements.define("custom-element", CustomElement);
 
 function randomize () {
-	document.querySelectorAll("custom-element").forEach((e) => {
-		e.number = Math.random();
-		e.id = window.crypto.randomUUID();
-	})
 	const container = document.querySelector("#container");
-	let elements = container.children;
-	elements = [].slice.call(elements);
-
-	const sortCriteria = (a, b) => {
-		const aScore = a.number;
-		const bScore = b.number;
-		if (aScore === bScore) {
-			return a.vmid > b.vmid ? 1 : -1;
-		}
-		else {
-			return aScore - bScore;
-		}
-	};
-
-	elements.sort(sortCriteria);
-	for (let i = 0; i < elements.length; i++) {
-		container.appendChild(elements[i]);
-		elements[i].update();
-	}
+	document.querySelectorAll("custom-element").forEach((e) => {
+		container.appendChild(e);
+	})
 }
