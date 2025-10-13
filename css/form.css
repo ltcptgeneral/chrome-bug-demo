@@ -1,0 +1,81 @@
+.input-grid {
+	display: grid;
+	gap: 5px 10px;
+	align-items: center;
+	width: 100%;
+}
+
+.input-grid * {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.input-grid input {
+	padding: 8px;
+}
+
+.input-grid svg {
+	padding: 0;
+}
+
+.input-grid .last-item {
+	text-align: right;
+}
+
+legend {
+	float: left;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	line-height: 1.5em;
+	margin-top: 0.25lh;
+	margin-bottom: 0.25lh;
+}
+
+fieldset {
+	border: 0;
+}
+
+fieldset > *:last-child {
+	margin-bottom: 8px;
+}
+
+fieldset > .input-grid {
+	float: left;
+}
+
+body:not(:-moz-handler-blocked) fieldset {
+	display: table-cell;
+}
+
+input[type="checkbox"] {
+	width: min-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input[type="radio"] {
+	position: inherit;
+}
+
+.w3-select, select {
+	padding: 8px;
+}
+
+.w3-check {
+	top: 0;
+}
+
+/* sibling of input-grid that is not inside another input grid */
+:not(.input-grid) .input-grid + * {
+	display: inline-block;
+	width: 100%;
+	margin-top: 5px;
+}
+
+dialog {
+	max-width: calc(min(50%, 80ch));
+	color: var(--main-text-color);
+}
