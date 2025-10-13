@@ -1,0 +1,131 @@
+{{define "instance-card"}}
+<instance-card data-type="{{.Type}}" data-status="{{.Status}}" data-vmid="{{.VMID}}" data-name="{{.Name}}" data-node="{{.Node}}" data-nodestatus="{{.NodeStatus}}">
+	<template shadowrootmode="open">
+		<link rel="stylesheet" href="modules/w3.css">
+		<link rel="stylesheet" href="css/style.css">
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				width: fit-content;
+			}
+			a, svg {
+				line-height: 1em;
+				height: 1em;
+				width: 1em;
+				margin: 0px;
+				padding: 0px;
+			}
+			#instance-name {
+				overflow-x: hidden;
+				min-width: 0;
+				width: auto;
+				white-space: nowrap;
+			}
+		</style>
+		<p>{{.VMID}}</p>
+		<p id="instance-name">{{.Name}}</p>
+		<p class="hide-small">{{.Type}}</p>
+		<div class="flex row nowrap hide-tiny">
+			{{if eq .Status "running"}}
+				<svg id="status" aria-label="instance is running"><use href="images/status/active.svg#symb"></svg>
+			{{else if eq .Status "stopped"}}
+				<svg id="status" aria-label="instance is stopped"><use href="images/status/inactive.svg#symb"></svg>
+			{{else if eq .Status "loading"}}
+				<svg id="status" aria-label="instance is loading"><use href="images/status/loading.svg#symb"></svg>
+			{{else}}
+				<svg id="status" aria-label="instance is loading"><use href="images/status/loading.svg#symb"></svg>
+			{{end}}
+			<p>{{.Status}}</p>
+		</div>
+		<p class="hide-medium">{{.Node}}</p>
+		<div class="flex row nowrap hide-medium">
+			{{if eq .NodeStatus "online"}}
+				<svg aria-label="node is online"><use href="images/status/active.svg#symb"></svg>
+			{{else if eq .NodeStatus "offline"}}
+				<svg aria-label="node is offline"><use href="images/status/inactive.svg#symb"></svg>
+			{{else if eq .NodeStatus "unknown"}}
+				<svg aria-label="node is offline"><use href="images/status/inactive.svg#symb"></svg>
+			{{else}}
+			{{end}}
+			<p>{{.NodeStatus}}</p>
+		</div>
+		<div class="flex row nowrap" style="height: 1lh;">
+			{{if and (eq .NodeStatus "online") (eq .Status "running")}}
+				<svg id="power-btn" class="clickable" aria-label="shutdown instance" role="button" tabindex=0><use href="images/actions/instance/stop.svg#symb"></svg>
+				<svg id="configure-btn" aria-disabled="true" role="none"><use href="images/actions/instance/config-inactive.svg#symb"></svg>
+				<svg id="backup-btn" aria-disabled="true" role="none"><use href="images/actions/instance/backup-inactive.svg#symb"></svg>
+				<a href="{{.ConsolePath}}" target="_blank">
+					<svg id="console-btn" class="clickable" aria-label="open console"><use href="images/actions/instance/console-active.svg#symb"></svg>
+				</a>
+				<svg id="delete-btn" aria-disabled="true" role="none"><use href="images/actions/instance/delete-inactive.svg#symb"></svg>
+			{{else if and (eq .NodeStatus "online") (eq .Status "stopped")}}
+				<svg id="power-btn" class="clickable" aria-label="start instance" role="button" tabindex=0><use href="images/actions/instance/start.svg#symb"></svg>
+				<a href="{{.ConfigPath}}">
+					<svg id="configure-btn" class="clickable" aria-label="change configuration"><use href="images/actions/instance/config-active.svg#symb"></svg>
+				</a>
+				<a href="{{.BackupsPath}}">
+					<svg id="backup-btn" class="clickable" aria-label="manage backups"><use href="images/actions/instance/backup-active.svg#symb"></svg>
+				</a>
+				<svg id="console-btn" aria-disabled="true" role="none"><use href="images/actions/instance/console-inactive.svg#symb"></svg>
+				<svg id="delete-btn" class="clickable" aria-label="delete instance" role="button" tabindex=0><use href="images/actions/instance/delete-active.svg#symb"></svg>
+			{{else if and (eq .NodeStatus "online") (eq .Status "loading")}}
+				<svg id="power-btn" aria-disabled="true" role="none"><use href="images/actions/instance/loading.svg#symb"></svg>
+				<svg id="configure-btn" aria-disabled="true" role="none"><use href="images/actions/instance/config-inactive.svg#symb"></svg>
+				<svg id="backup-btn" aria-disabled="true" role="none"><use href="images/actions/instance/backup-inactive.svg#symb"></svg>
+				<svg id="console-btn" aria-disabled="true" role="none"><use href="images/actions/instance/console-inactive.svg#symb"></svg>
+				<svg id="delete-btn" aria-disabled="true" role="none"><use href="images/actions/instance/delete-inactive.svg#symb"></svg>
+			{{else}}
+			{{end}}
+		</div>
+		<template id="power-dialog">
+			<link rel="stylesheet" href="modules/w3.css">
+			<link rel="stylesheet" href="css/style.css">
+			<link rel="stylesheet" href="css/form.css">
+			<dialog class="w3-container w3-card w3-border-0">
+				<p class="w3-large" id="prompt" style="text-align: center;">
+					{{if eq .Status "running"}}
+						Stop {{.VMID}}
+					{{else if eq .Status "stopped"}}
+						Start {{.VMID}}
+					{{else}}
+					{{end}}
+				</p>
+				<div id="body">
+					<form method="dialog" class="input-grid" style="grid-template-columns: auto 1fr;" id="form">
+					{{if eq .Status "running"}}
+						<p>Are you sure you want to <strong>stop</strong> {{.VMID}}?</p>
+					{{else if eq .Status "stopped"}}
+						<p>Are you sure you want to <strong>start</strong> {{.VMID}}?</p>
+					{{else}}
+					{{end}}
+					</form>
+				</div>
+				<div id="controls" class="w3-center w3-container">
+					<button id="cancel" value="cancel" form="form" class="w3-button w3-margin" style="background-color: var(--negative-color, #f00); color: var(--lightbg-text-color, black);" formnovalidate>CANCEL</button>
+					<button id="confirm" value="confirm" form="form" class="w3-button w3-margin" style="background-color: var(--positive-color, #0f0); color: var(--lightbg-text-color, black);">CONFIRM</button>
+				</div>
+			</dialog>
+		</template>
+		<template id="delete-dialog">
+			<link rel="stylesheet" href="modules/w3.css">
+			<link rel="stylesheet" href="css/style.css">
+			<link rel="stylesheet" href="css/form.css">
+			<dialog class="w3-container w3-card w3-border-0">
+				<p class="w3-large" id="prompt" style="text-align: center;">
+					Delete {{.VMID}}
+				</p>
+				<div id="body">
+					<form method="dialog" class="input-grid" style="grid-template-columns: auto 1fr;" id="form">
+						<p>Are you sure you want to <strong>delete</strong> {{.VMID}}?</p>
+					</form>
+				</div>
+				<div id="controls" class="w3-center w3-container">
+					<button id="cancel" value="cancel" form="form" class="w3-button w3-margin" style="background-color: var(--negative-color, #f00); color: var(--lightbg-text-color, black);" formnovalidate>CANCEL</button>
+					<button id="confirm" value="confirm" form="form" class="w3-button w3-margin" style="background-color: var(--positive-color, #0f0); color: var(--lightbg-text-color, black);">CONFIRM</button>
+				</div>
+			</dialog>
+		</template>
+	</template>
+</instance-card>
+{{end}}
