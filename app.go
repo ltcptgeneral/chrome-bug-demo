@@ -1,18 +1,28 @@
-package app
+package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
-	"proxmoxaas-dashboard/dist/web" // go will complain here until the first build
+	"proxmoxaas-dashboard/web" // go will complain here until the first build
 
 	"github.com/gin-gonic/gin"
 )
 
-func Run(configPath *string) {
+func main() {
+	fixed := flag.String("fixed", "false", "")
+	flag.Parse()
+	Run(fixed)
+}
+
+func Run(fixed *string) {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	//ServeStaticFixed(router)
-	ServeStaticBugged(router)
+	if *fixed == "true" {
+		ServeStaticFixed(router)
+	} else {
+		ServeStaticBugged(router)
+	}
 	html := LoadStatic(web.Templates)
 	TMPL = LoadHTMLToGin(router, html)
 

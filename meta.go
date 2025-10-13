@@ -1,4 +1,4 @@
-package app
+package main
 
 // defines mime type and associated minifier
 type MimeType struct {
