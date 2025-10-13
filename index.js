@@ -41,7 +41,7 @@ customElements.define("custom-element", CustomElement);
 function randomize () {
 	document.querySelectorAll("custom-element").forEach((e) => {
 		e.number = Math.random();
-		e.id = window.crypto.randomUUID();
+		e.id = Math.random() * 100;
 		e.update();
 	})
 
