@@ -2,11 +2,7 @@ window.addEventListener("DOMContentLoaded", init);
 
 async function init () {
 	document.querySelector("#randomize").addEventListener("click", randomize);
-	document.querySelectorAll("custom-element").forEach((e) => {
-		e.number = Math.random();
-		e.id = window.crypto.randomUUID();
-		e.update();
-	})
+	randomize()
 }
 
 class CustomElement extends HTMLElement {
@@ -43,6 +39,13 @@ class CustomElement extends HTMLElement {
 customElements.define("custom-element", CustomElement);
 
 function randomize () {
+	document.querySelectorAll("custom-element").forEach((e) => {
+		e.number = Math.random();
+		e.id = window.crypto.randomUUID();
+		e.update();
+	})
+
+	// issue happens here
 	const container = document.querySelector("#container");
 	document.querySelectorAll("custom-element").forEach((e) => {
 		container.appendChild(e);
