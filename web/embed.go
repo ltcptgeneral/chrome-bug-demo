@@ -14,5 +14,4 @@ var Images_fs embed.FS
 var Scripts_fs embed.FS
 
 //go:embed html/*
-//go:embed templates/*
 var Templates embed.FS

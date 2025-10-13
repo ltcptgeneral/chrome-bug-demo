@@ -2,12 +2,10 @@ package app
 
 import (
 	"embed"
-	"encoding/json"
 	"errors"
 	"html/template"
 	"io/fs"
 	"log"
-	"os"
 	"reflect"
 	"strings"
 
@@ -15,38 +13,10 @@ import (
 )
 
 var TMPL *template.Template
-var Global Config
-
-type Config struct {
-	Port         int    `json:"listenPort"`
-	Organization string `json:"organization"`
-	DASH         string `json:"dashurl"`
-	PVE          string `json:"pveurl"`
-	API          string `json:"apiurl"`
-}
 
 type StaticFile struct {
 	Data     string
 	MimeType MimeType
-}
-
-type VMPath struct {
-	Node string
-	Type string
-	VMID string
-}
-
-func GetConfig(configPath string) Config {
-	content, err := os.ReadFile(configPath)
-	if err != nil {
-		log.Fatal("Error when opening config file: ", err)
-	}
-	var config Config
-	err = json.Unmarshal(content, &config)
-	if err != nil {
-		log.Fatal("Error during parsing config file: ", err)
-	}
-	return config
 }
 
 func LoadStatic(files embed.FS) map[string]StaticFile {

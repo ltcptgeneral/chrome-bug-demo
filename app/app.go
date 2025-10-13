@@ -11,8 +11,8 @@ import (
 func Run(configPath *string) {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	ServeStaticFixed(router)
-	//ServeStaticBugged(router)
+	//ServeStaticFixed(router)
+	ServeStaticBugged(router)
 	html := LoadStatic(web.Templates)
 	TMPL = LoadHTMLToGin(router, html)
 

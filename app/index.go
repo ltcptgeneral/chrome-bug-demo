@@ -20,23 +20,5 @@ type InstanceCard struct {
 }
 
 func HandleGETIndex(c *gin.Context) {
-	instances := map[uint]InstanceCard{}
-	instances[200] = InstanceCard{
-		VMID:        200,
-		Name:        "example",
-		Type:        "lxc",
-		Status:      "running",
-		Node:        "geigatron-2-pve",
-		NodeStatus:  "online",
-		ConfigPath:  "/",
-		ConsolePath: "/",
-		BackupsPath: "/",
-	}
-
-	page := gin.H{
-		"global":    nil,
-		"page":      "index",
-		"instances": instances,
-	}
-	c.HTML(http.StatusOK, "html/index.html", page)
+	c.HTML(http.StatusOK, "html/index.html", nil)
 }
