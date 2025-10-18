@@ -222,8 +222,8 @@ async function refreshInstances () {
 }
 
 function initInstances () {
-	//const container = document.querySelector("#instance-container");
-	let instances = document.querySelectorAll("#instance-container instance-card");
+	const container = document.querySelector("#instance-container");
+	let instances = container.children;
 	instances = [].slice.call(instances);
 	for (let i = 0; i < instances.length; i++) {
 		instances[i].update();
@@ -271,8 +271,7 @@ function sortInstances () {
 	}
 
 	const container = document.querySelector("#instance-container");
-	//let instances = container.children;
-	let instances = document.querySelectorAll("#instance-container instance-card");
+	let instances = container.children;
 	instances = [].slice.call(instances);
 
 	for (let i = 0; i < instances.length; i++) {
@@ -294,11 +293,8 @@ function sortInstances () {
 	};
 
 	instances.sort(sortCriteria);
-
-	let end = document.querySelector("#end")
-
 	for (let i = 0; i < instances.length; i++) {
-		container.moveBefore(instances[i], end);
+		container.moveBefore(instances[i], null);
 		instances[i].update();
 	}
 }
