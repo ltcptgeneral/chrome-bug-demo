@@ -72,6 +72,7 @@ class InstanceCard extends HTMLElement {
 	}
 
 	update () {
+		console.log("instance updated")
 		const nameParagraph = this.shadowRoot.querySelector("#instance-name");
 		nameParagraph.innerText = "";
 		if (this.searchQueryResult.alignment) {
@@ -221,8 +222,8 @@ async function refreshInstances () {
 }
 
 function initInstances () {
-	const container = document.querySelector("#instance-container");
-	let instances = container.children;
+	//const container = document.querySelector("#instance-container");
+	let instances = document.querySelectorAll("#instance-container instance-card");
 	instances = [].slice.call(instances);
 	for (let i = 0; i < instances.length; i++) {
 		instances[i].update();
@@ -270,7 +271,8 @@ function sortInstances () {
 	}
 
 	const container = document.querySelector("#instance-container");
-	let instances = container.children;
+	//let instances = container.children;
+	let instances = document.querySelectorAll("#instance-container instance-card");
 	instances = [].slice.call(instances);
 
 	for (let i = 0; i < instances.length; i++) {
@@ -293,8 +295,10 @@ function sortInstances () {
 
 	instances.sort(sortCriteria);
 
+	let end = document.querySelector("#end")
+
 	for (let i = 0; i < instances.length; i++) {
-		container.appendChild(instances[i]);
+		container.moveBefore(instances[i], end);
 		instances[i].update();
 	}
 }
